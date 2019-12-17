@@ -25,7 +25,7 @@ class ViewController: UIViewController {
             let butt = self.view.viewWithTag(i) as! UIButton
             buttons.append(butt)
         }
-        lblMovesLeft.text = "500"
+        lblMovesLeft.text = "70"
     }
    
     
