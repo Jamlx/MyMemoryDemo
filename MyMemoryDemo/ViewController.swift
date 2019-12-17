@@ -8,111 +8,91 @@
 
 import UIKit
 
-class card {
-    var id: Int
-    var label: String
-    var button: UIButton
-    init(id: Int, label: String, button: UIButton){
-        self.id = id
-        self.label = label
-        self.button = button
-    }
-}
 
 class ViewController: UIViewController {
+
+    var model: MemoryBrain = MemoryBrain()
+    var buttons = [UIButton]()
 
     @IBOutlet weak var lblMovesMade: UILabel!
     @IBOutlet weak var lblMovesLeft: UILabel!
     @IBOutlet weak var winLoseLabel: UILabel!
-    
-    var cards = [card]()
-    var flipped = [card]()
-    var completedPairs: Int = 0
-    
-    var possibleLabels = ["dog", "dog", "cat", "cat", "bird", "bird", "horse", "horse", "cow", "cow", "pig", "pig", "sheep", "sheep", "goat", "goat", "bull", "bull", "wolf", "wolf"]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         for i in 1...20{
             let butt = self.view.viewWithTag(i) as! UIButton
-            let getLabel: String = possibleLabels.randomElement()!
-            let makeCard: card = card(id: i, label: getLabel, button: butt)
-            if let index = possibleLabels.firstIndex(of: getLabel){
-                possibleLabels.remove(at: index)
-            }
-            cards.append(makeCard)
+            buttons.append(butt)
         }
-        
-        lblMovesLeft.text = "50"
-        // Do any additional setup after loading the view.
+        lblMovesLeft.text = "500"
     }
+   
     
-   
-   
-    @IBAction func btnClick(_ sender: UIButton) {
-        
+    func updateView(_ changes: Changes){
         var newLabel: String
-        var image:UIImage
-        let tag: Int = sender.tag
-        var movesLeft: Int = 0;
-        var movesMade: Int = 0;
+        var image: UIImage
         
-        if(flipped.count==2 && completedPairs < 10){
-            if let movesLeftString = lblMovesLeft.text{
-                movesLeft = Int(movesLeftString)!
-                movesLeft = movesLeft - 1
-                lblMovesLeft.text = String(movesLeft)
+        lblMovesLeft.text = String(changes.movesLeft)
+        lblMovesMade.text = String(changes.movesMade)
+        
+        if(changes.status != "cont"){
+            image = UIImage()
+            newLabel = ""
+            for btn in buttons{
+                btn.setTitle(newLabel, for: UIControl.State.normal)
+                btn.setBackgroundImage(image, for: UIControl.State.normal)
+                btn.isEnabled = false
+            }
+            if(changes.status == "win"){
+                winLoseLabel.text = "Winner!"
+            }else if(changes.status == "lose"){
+                winLoseLabel.text = "Loser!"
             }
             
-            if let movesString = lblMovesMade.text{
-                movesMade = Int(movesString)!
-                movesMade = movesMade + 1
-                lblMovesMade.text = String(movesMade)
+        }
+        
+        if(changes.toImage.count != 0 ){
+            image = (UIImage(named: "cute_dog.jpg") as UIImage?)!
+            newLabel = ""
+            for card in changes.toImage{
+                buttons[card.id-1].setTitle(newLabel, for: UIControl.State.normal)
+                buttons[card.id-1].setBackgroundImage(image, for: UIControl.State.normal)
+                
             }
-            if(flipped[0].label == flipped[1].label){
-                image = UIImage()
-                newLabel = ""
-                flipped[0].button.setBackgroundImage(image, for: UIControl.State.normal)
-                flipped[0].button.setTitle(newLabel, for: UIControl.State.normal)
-                flipped[0].button.isEnabled = false
-                flipped[1].button.setBackgroundImage(image, for: UIControl.State.normal)
-                flipped[1].button.setTitle(newLabel, for: UIControl.State.normal)
-                flipped[1].button.isEnabled = false
-                completedPairs+=1
-            }else{
-                image = (UIImage(named: "cute_dog.jpg") as UIImage?)!
-                newLabel = ""
-                flipped[0].button.setBackgroundImage(image, for: UIControl.State.normal)
-                flipped[0].button.setTitle(newLabel, for: UIControl.State.normal)
-                flipped[1].button.setBackgroundImage(image, for: UIControl.State.normal)
-                flipped[1].button.setTitle(newLabel, for: UIControl.State.normal)
+        }
+        
+        if(changes.toLabel.count != 0){
+            image = UIImage()
+            for card in changes.toLabel{
+                buttons[card.id-1].setTitle(card.label, for: UIControl.State.normal)
+                buttons[card.id-1].setBackgroundImage(image, for: UIControl.State.normal)
+                
             }
-            flipped.removeAll()
-            if(movesLeft == 0){
-                for card in cards{
-                    card.button.isEnabled=false
-                    card.button.setTitle("", for: UIControl.State.normal)
-                    card.button.setBackgroundImage(UIImage(), for: UIControl.State.normal)
+        }
+        
+        if(changes.toRemove.count != 0){
+            image = UIImage()
+            newLabel = ""
+            for card in changes.toRemove{
+                let seconds = 1.0
+                DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                    self.buttons[card.id-1].setTitle(newLabel, for: UIControl.State.normal)
+                    self.buttons[card.id-1].setBackgroundImage(image, for: UIControl.State.normal)
+                    self.buttons[card.id-1].isEnabled = false
                 }
-                winLoseLabel.text="Loser!"
-            }
-        }else if(flipped.count==0 && completedPairs < 10){
-                image = UIImage()
-                flipped.append(cards[tag-1])
-                flipped[0].button.setTitle(flipped[0].label, for: UIControl.State.normal)
-                flipped[0].button.setBackgroundImage(image, for: UIControl.State.normal)
-        }else if(flipped.count==1 && completedPairs < 10){
-            if(flipped[0].id != tag){
-                image = UIImage()
-                flipped.append(cards[tag-1])
-                flipped[1].button.setTitle(flipped[1].label, for: UIControl.State.normal)
-                flipped[1].button.setBackgroundImage(image, for: UIControl.State.normal)
+
             }
         }
-        if(completedPairs == 10){
-            winLoseLabel.text="Winner!"
-        }
+
+    }
+    
+    @IBAction func btnClick(_ sender: UIButton) {
+        let movesLeft = Int(lblMovesLeft.text!)!
+        let movesMade = Int(lblMovesMade.text!)!
+        let tag = Int(sender.tag)
+        let changes: Changes = model.btnClick(tag, movesLeft, movesMade)
+        updateView(changes)
     }
 }
 

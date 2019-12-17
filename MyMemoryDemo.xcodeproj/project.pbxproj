@@ -14,6 +14,8 @@
 		1AA86D5423A6B95A007C54FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AA86D5223A6B95A007C54FA /* LaunchScreen.storyboard */; };
 		1AA86D5F23A6B95B007C54FA /* MyMemoryDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA86D5E23A6B95B007C54FA /* MyMemoryDemoTests.swift */; };
 		1AA86D6A23A6B95B007C54FA /* MyMemoryDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA86D6923A6B95B007C54FA /* MyMemoryDemoUITests.swift */; };
+		1AA86D7823A82AD3007C54FA /* MemoryBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA86D7723A82AD3007C54FA /* MemoryBrain.swift */; };
+		1AA86D7A23A82B16007C54FA /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA86D7923A82B16007C54FA /* Card.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		1AA86D6523A6B95B007C54FA /* MyMemoryDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyMemoryDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA86D6923A6B95B007C54FA /* MyMemoryDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMemoryDemoUITests.swift; sourceTree = "<group>"; };
 		1AA86D6B23A6B95B007C54FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AA86D7723A82AD3007C54FA /* MemoryBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrain.swift; sourceTree = "<group>"; };
+		1AA86D7923A82B16007C54FA /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 				1AA86D4923A6B959007C54FA /* AppDelegate.swift */,
 				1AA86D4B23A6B959007C54FA /* ViewController.swift */,
 				1AA86D4D23A6B959007C54FA /* Main.storyboard */,
+				1AA86D7723A82AD3007C54FA /* MemoryBrain.swift */,
+				1AA86D7923A82B16007C54FA /* Card.swift */,
 				1AA86D5023A6B95A007C54FA /* Assets.xcassets */,
 				1AA86D5223A6B95A007C54FA /* LaunchScreen.storyboard */,
 				1AA86D5523A6B95A007C54FA /* Info.plist */,
@@ -256,8 +262,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AA86D7823A82AD3007C54FA /* MemoryBrain.swift in Sources */,
 				1AA86D4C23A6B959007C54FA /* ViewController.swift in Sources */,
 				1AA86D4A23A6B959007C54FA /* AppDelegate.swift in Sources */,
+				1AA86D7A23A82B16007C54FA /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
